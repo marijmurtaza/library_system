@@ -55,6 +55,5 @@ Follow these instructions to set up and run the application locally. Make sure y
 
 1. Clone the repository: `git clone https://github.com/your-username/django-book-management.git`
 2. Navigate to the project directory: `cd django-book-management`
-3. Install dependencies: `pip install -r requirements.txt`
-4. Apply database migrations: `python manage.py migrate`
-5. Run the development server: `python manage.py runserver`
+3. Apply database migrations: `python manage.py migrate`
+4. Run the development server: `python manage.py runserver`
