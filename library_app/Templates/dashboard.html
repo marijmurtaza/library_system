@@ -1,0 +1,63 @@
+{% extends 'index.html' %}
+
+{% block content %}
+{% comment %} {% include "accounts/status.html" %} {% endcomment %}
+
+<br>
+
+<div class="row">
+    <div class="col-md-5">
+        <hr>
+        <div class="card card-body">
+            <a class="btn btn-primary btn-sm btn-block" href="{% url 'addauthor'%}">Add Author</a>
+            <table class="table table-sm">
+                <tr>
+                    <th>First name</th>
+                    <th>Last name</th>
+                    <th>Address</th>
+                </tr>
+                {% for author in authors %}
+                <tr>
+                    <td style="width:150px">{{ author.first_name }}</td>
+                    <td>{{ author.last_name }}</td>
+                    <td>{{ author.address }}</td>
+             
+                </tr>{% endfor %}
+                
+            </table>
+        </div>
+    </div>
+
+    <div class="col-md-7">
+        <h5> 5 Recently Added Books</h5>
+        <hr>
+        <div class="card card-body">
+            <a class="btn btn-primary btn-sm btn-block" href="{% url 'addbook'%}">Add Books</a>
+            <table class="table table-sm">
+                <tr>
+                    <th style="width:200px">Title</th>
+                    <th>Author</th>
+                    <th>Publication</th>
+                    <!-- Uncomment the following lines if you want to display ISBN and Price -->
+                    <!-- <th style="width:150px">ISBN</th>
+                    <th>Price</th> -->
+                    <th>Update</th>
+                    <th>Remove</th>
+                </tr>
+                {% for book in books %}
+                <tr>
+                    <td>{{ book.title }}</td>
+                    <td>{{ book.author }}</td>
+                    <td>{{ book.publication_year }}</td>
+                    <!-- Uncomment the following lines if you want to display ISBN and Price -->
+                    <!-- <td>{{ book.isbn }}</td>
+                    <td>{{ book.price }}</td> -->
+                    <td><a class="btn btn-sm btn-info" href="{% url 'updatebook' book.id %}">Update</a></td>
+                    <td><a class="btn btn-sm btn-danger" href="{% url 'deletebook' book.id %}">Remove</a></td>
+                </tr>
+                {% endfor %}
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock content %}
