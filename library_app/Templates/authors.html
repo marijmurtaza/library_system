@@ -4,30 +4,35 @@
 <br>
 
 <div class="row">
-	<div class="col-md">
-		<div class="card card-body">
-			<h5>Authors</h5>
-		</div>
-		<div class="card card-body">
-			<table class="table">
-				<tr>
-					<th>First Name</th>
-					<th>Last Name</th>
-					<th>Address</th>
-				 </tr>
-				
-				<tr>
-				 {% for author in authors %}
-				 <td> {{author.first_name}}</td>
-				 <td> {{author.last_name}}</td>
-				 <td> {{author.address}}</td>
-				 </tr>
-				 {% endfor %}
-				 
-			</table>
-		</div>
-	</div>
-	
+    <div class="col-md">
+        <div class="card card-body">
+            <h5>Authors</h5>
+        </div>
+        <div class="card card-body">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>First Name</th>
+                        <th>Last Name</th>
+                        <th>Address</th>
+                        <th>Update</th>
+                        <th>Delete</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for author in authors %}
+                    <tr>
+                        <td>{{ author.first_name }}</td>
+                        <td>{{ author.last_name }}</td>
+                        <td>{{ author.address }}</td>
+                        <td><a class="btn btn-sm btn-info" href="{% url 'update-author' author.id %}">Update</a></td>
+                        <td><a class="btn btn-sm btn-danger" href="{% url 'delete-author' author.id %}">Remove</a></td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
 </div>
 
 {% endblock content %}

@@ -1,21 +1,24 @@
-{% extends "index.html"%}
+{% extends "index.html" %}
 {% load static %}
 {% block content %}
 
-<br>
-<div class ="row">
-    <div class ="col-md-6">
-        <div class ="card card-body">
-        <p> Are you sure you want to Delete "{{item}}"?</p>
+<div class="container mt-4">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-body">
+                    <p class="mb-4">Are you sure you want to delete "{{ item }}"?</p>
 
-        <form action="{% url 'deletebook' item.id %}"  method = "POST">
-        {% csrf_token %}
-        <a class="btn btn-warning" href = "{% url 'home' %}"> Cancel </a>
-
-        <input class ="btn btn-danger" type ="submit" name="Confirm">
-
-        </form>
+                    <form action="{% if item_type == 'book' %}{% url 'DeletebookView' item.id %}
+                            {% elif item_type == 'author' %}{% url 'DeleteAuthorViewthor' item.id %}{% endif %}" method="POST">
+                        {% csrf_token %}
+                        <a class="btn btn-warning" href="{% url 'home' %}">Cancel</a>
+                        <input class="btn btn-danger ml-2" type="submit" name="Confirm">
+                    </form>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
-</div>
+
 {% endblock %}

@@ -1,88 +1,75 @@
-from django.shortcuts import render,redirect
-from .models import *
-from .forms import bookform , authorform
-from django.db.models import Count, Avg, Max, Min
-# Create your views here.
-def home(request):
+from django.views.generic import ListView, CreateView, UpdateView, DeleteView,TemplateView
+from django.urls import reverse_lazy
+from .models import Book, Author
+from .forms import bookform, authorform
+from django.db.models import Count, Avg
 
-    authors = Author.objects.all()
-    books = Book.objects.all()[5:]
-    context = {
-        'authors':authors,
-        'books': books,
-    }
+class HomeView(ListView):
+    template_name = 'dashboard.html'
+    context_object_name = 'books'
 
-    return render(request,"dashboard.html",context)
+    def get_queryset(self):
+        return Book.objects.all()[5:]
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['authors'] = Author.objects.all()
+        return context
 
-def books(request):
-    books = Book.objects.all()
-    return render(request,"books.html",{'books':books})
+class BooksView(ListView):
+    model = Book
+    template_name = 'books.html'
+    context_object_name = 'books'
 
+class AuthorsView(ListView):
+    model = Author
+    template_name = 'authors.html'
+    context_object_name = 'authors'
 
-def author(request):
-    authors = Author.objects.all()
-    return render(request,"authors.html",{'authors':authors})
+class AddBookView(CreateView):
+    model = Book
+    form_class = bookform
+    template_name = 'add_book.html'
+    success_url = reverse_lazy('home')
 
-def addbook(request):
-    form = bookform()
-    if request.method == 'POST':
-        form = bookform(request.POST)
-        if form.is_valid():
-            form.save()  # Save the form data to the database
-            return redirect('/') 
-    
-    context = {'form':form}
-    return render(request,"add_book.html",context)
+class UpdateBookView(UpdateView):
+    model = Book
+    form_class = bookform
+    template_name = 'add_book.html'
+    success_url = reverse_lazy('home')
 
-def addauthor(request):
-    form = authorform()
-    if request.method == 'POST':
-        form = authorform(request.POST)
-        if form.is_valid():
-            form.save()  # Save the form data to the database
-            return redirect('/') 
-    
-    context = {'form':form}
-    return render(request,"add_author.html",context)
+class DeleteBookView(DeleteView):
+    model = Book
+    template_name = 'delete.html'
+    success_url = reverse_lazy('home')
 
+class AddAuthorView(CreateView):
+    model = Author
+    form_class = authorform
+    template_name = 'add_author.html'
+    success_url = reverse_lazy('home')
 
-def updatebook(request,pk):
-    book = Book.objects.get(id=pk)
-    form =bookform(instance=book)
-    if request.method == 'POST':
-        form = bookform(request.POST,instance=book)
-        if form.is_valid():
-            form.save()  # Save the form data to the database
-            return redirect('/') 
-    context ={
-        'form':form,
-    }
-    return render(request,'add_book.html',context)
+class UpdateAuthorView(UpdateView):
+    model = Author
+    form_class = authorform
+    template_name = 'add_author.html'
+    success_url = reverse_lazy('home')
 
-def deletebook(request,pk):
-    book = Book.objects.get(id=pk)
-    if request.method == 'POST':
-        book.delete()
-        return redirect('/')
-    context={"item":book}
-    return render(request,'delete.html',context)
+class DeleteAuthorView(DeleteView):
+    model = Author
+    template_name = 'delete.html'
+    success_url = reverse_lazy('home')
 
-def aggregation_results(request):
-    total_books = Book.objects.count()
-    average_price = Book.objects.aggregate(Avg('price'))['price__avg']
-    oldest_book = Book.objects.order_by('publication_year').first()
-    newest_book = Book.objects.order_by('-publication_year').first()
-    books_published_each_year = Book.objects.values('publication_year').annotate(count=Count('id'))
+class AggregationResultsView(TemplateView):
+    template_name = 'aggregation.html'
 
-    authors = Author.objects.all()  # You might need authors for the existing part of the template
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
 
-    context = {
-        'total_books': total_books,
-        'average_price': average_price,
-        'oldest_book': oldest_book,
-        'newest_book': newest_book,
-        'books_published_each_year': books_published_each_year,
-        'authors': authors,  # You might need authors for the existing part of the template
-    }
-    return render(request, 'aggregation.html', context)
+        context['total_books'] = Book.objects.count()
+        context['average_price'] = Book.objects.aggregate(Avg('price'))['price__avg']
+        context['oldest_book'] = Book.objects.order_by('publication_year').first()
+        context['newest_book'] = Book.objects.order_by('-publication_year').first()
+        context['books_published_each_year'] = Book.objects.values('publication_year').annotate(count=Count('id'))
+
+        return context

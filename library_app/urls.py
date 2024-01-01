@@ -1,16 +1,16 @@
 from django.urls import path
-from . import views
+from .views import *
 
 urlpatterns = [
-    path("",views.home,name='home'),
-    path('books/',views.books,name='books'),
-    path('author/',views.author,name='author'),
-    path('addbook/',views.addbook,name="addbook"),
-    path('aggregation_results/', views.aggregation_results, name='aggregation_results'),
-    path('updatebook/<str:pk>/',views.updatebook,name="updatebook"),
-    path('deletebook/<str:pk>/',views.deletebook,name="deletebook"),
-   
-
-    path('addauthor/',views.addauthor,name="addauthor"),
-    
+    path('', HomeView.as_view(), name='home'),
+    path('books/', BooksView.as_view(), name='books'),
+    path('authors/', AuthorsView.as_view(), name='authors'),
+    path('book/add/', AddBookView.as_view(), name='add-book'),
+    path('book/<int:pk>/update/', UpdateBookView.as_view(), name='update-book'),
+    path('book/<int:pk>/delete/', DeleteBookView.as_view(), name='delete-book'),
+    path('author/add/', AddAuthorView.as_view(), name='add-author'),
+    path('author/<int:pk>/update/', UpdateAuthorView.as_view(), name='update-author'),
+    path('author/<int:pk>/delete/', DeleteAuthorView.as_view(), name='delete-author'),
+    path('aggregation/', AggregationResultsView.as_view(), name='aggregation-results'),
 ]
+

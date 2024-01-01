@@ -4,37 +4,39 @@
 <br>
 
 <div class="row">
-	<div class="col-md">
-		<div class="card card-body">
-			<h5>Books</h5>
-		</div>
-		<div class="card card-body">
-			<table class="table">
-				<tr>
-					<th>Title</th>
-					<th>Author</th>
-					<th>Publication Year</th>
-                    <th>ISBN</th>
-                    <th>Price</th>
-					<th>Update</th>
-					<th>Delete</th>
-				 </tr>
-				<tr>
-				 {% for book in books %}
-				 <td> {{book.title}}</td>
-				 <td> {{book.author}}</td>
-				 <td> {{book.publication_year}}</td>
-                 <td> {{book.isbn}}</td>
-				 <td> {{book.price}}</td>
-				<td><a class="btn btn-sm btn-info" href="{% url 'updatebook' book.id %}">Update</a></td>
-				<td><a class="btn btn-sm btn-danger" href="">Remove</a></td>
-				 </tr>
-				 {% endfor %}
-				 
-			</table>
-		</div>
-	</div>
-	
+    <div class="col-md">
+        <div class="card card-body">
+            <h5>Books</h5>
+        </div>
+        <div class="card card-body">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Title</th>
+                        <th>Author</th>
+                        <th>Publication Year</th>
+                        <th>ISBN</th>
+                        <th>Price</th>
+                        <th>Update</th>
+                        <th>Delete</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for book in books %}
+                    <tr>
+                        <td>{{ book.title }}</td>
+                        <td>{{ book.author }}</td>
+                        <td>{{ book.publication_year }}</td>
+                        <td>{{ book.isbn }}</td>
+                        <td>{{ book.price }}</td>
+                        <td><a class="btn btn-sm btn-info" href="{% url 'update-book' book.id %}">Update</a></td>
+                        <td><a class="btn btn-sm btn-danger" href="{% url 'delete-book' book.id %}">Remove</a></td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
 </div>
 
 {% endblock content %}

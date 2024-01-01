@@ -2,21 +2,26 @@
 {% load static %}
 {% block content %}
 
-<div class="row">
-    <div class="col-md-6">
-        <div class="card card-body">
-            <h3>Aggregation Results</h3>
-            <hr>
-            <p>Total number of books: {{ total_books }}</p>
-            <p>Average price of all books: {{ average_price }}</p>
-            <p>Oldest book: {{ oldest_book }}</p>
-            <p>Newest book: {{ newest_book }}</p>
-            <h6>Books Published Each Year</h6>
-            <ul>
-                {% for result in books_published_each_year %}
-                    <li>{{ result.publication_year }}: {{ result.count }} books</li>
-                {% endfor %}
-            </ul>
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="mb-0">Aggregation Results</h5>
+                </div>
+                <div class="card-body">
+                    <h6>Total number of books: {{ total_books }}</h6>
+                    <h6>Average price of all books: {{ average_price }}</h6>
+                    <h6>Oldest book: {{ oldest_book }}</h6>
+                    <h6>Newest book: {{ newest_book }}</h6>
+                    <h6>Books Published Each Year</h6>
+                    <ul>
+                        {% for result in books_published_each_year %}
+                            <li>{{ result.publication_year }}: {{ result.count }} books</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
         </div>
     </div>
 </div>
